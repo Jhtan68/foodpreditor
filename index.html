@@ -1,0 +1,107 @@
+import React, { useState } from 'react';
+
+export default function FoodCostPredictor() {
+  const [income, setIncome] = useState('');
+  const [familySize, setFamilySize] = useState('');
+  const [predictedCost, setPredictedCost] = useState(null);
+
+  const handlePredict = () => {
+    const incomeVal = parseFloat(income);
+    const familySizeVal = parseFloat(familySize);
+
+    if (isNaN(incomeVal) || isNaN(familySizeVal)) {
+      setPredictedCost('Invalid input');
+      return;
+    }
+
+    const cost = -1.12 + 0.15 * incomeVal + 0.79 * familySizeVal;
+    setPredictedCost(cost.toFixed(2));
+  };
+
+  return (
+    <div className="container">
+      <div className="card">
+        <h1>Food Cost Predictor</h1>
+        <div className="form-group">
+          <label>Income ($)</label>
+          <input
+            type="number"
+            value={income}
+            onChange={(e) => setIncome(e.target.value)}
+            placeholder="Enter income"
+          />
+        </div>
+        <div className="form-group">
+          <label>Family Size</label>
+          <input
+            type="number"
+            value={familySize}
+            onChange={(e) => setFamilySize(e.target.value)}
+            placeholder="Enter family size"
+          />
+        </div>
+        <button onClick={handlePredict}>Predict Food Cost</button>
+        {predictedCost !== null && (
+          <div className="result">
+            Predicted Food Cost: ${predictedCost}
+          </div>
+        )}
+      </div>
+      <style jsx>{`
+        .container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          background: #f0f0f0;
+        }
+        .card {
+          background: #fff;
+          padding: 2rem;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          width: 100%;
+          max-width: 400px;
+        }
+        h1 {
+          text-align: center;
+          margin-bottom: 1rem;
+        }
+        .form-group {
+          margin-bottom: 1rem;
+        }
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+        }
+        input {
+          width: 100%;
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        button {
+          width: 100%;
+          padding: 0.75rem;
+          background-color: #0070f3;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+        button:hover {
+          background-color: #005bb5;
+        }
+        .result {
+          margin-top: 1rem;
+          padding: 0.75rem;
+          background: #e0f7fa;
+          text-align: center;
+          border-radius: 4px;
+          font-weight: bold;
+        }
+      `}</style>
+    </div>
+  );
+}
