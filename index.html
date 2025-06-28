@@ -1,107 +1,91 @@
-import React, { useState } from 'react';
-
-export default function FoodCostPredictor() {
-  const [income, setIncome] = useState('');
-  const [familySize, setFamilySize] = useState('');
-  const [predictedCost, setPredictedCost] = useState(null);
-
-  const handlePredict = () => {
-    const incomeVal = parseFloat(income);
-    const familySizeVal = parseFloat(familySize);
-
-    if (isNaN(incomeVal) || isNaN(familySizeVal)) {
-      setPredictedCost('Invalid input');
-      return;
-    }
-
-    const cost = -1.12 + 0.15 * incomeVal + 0.79 * familySizeVal;
-    setPredictedCost(cost.toFixed(2));
-  };
-
-  return (
-    <div className="container">
-      <div className="card">
-        <h1>Food Cost Predictor</h1>
-        <div className="form-group">
-          <label>Income ($)</label>
-          <input
-            type="number"
-            value={income}
-            onChange={(e) => setIncome(e.target.value)}
-            placeholder="Enter income"
-          />
-        </div>
-        <div className="form-group">
-          <label>Family Size</label>
-          <input
-            type="number"
-            value={familySize}
-            onChange={(e) => setFamilySize(e.target.value)}
-            placeholder="Enter family size"
-          />
-        </div>
-        <button onClick={handlePredict}>Predict Food Cost</button>
-        {predictedCost !== null && (
-          <div className="result">
-            Predicted Food Cost: ${predictedCost}
-          </div>
-        )}
-      </div>
-      <style jsx>{`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Consumption Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-          background: #f0f0f0;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
         }
-        .card {
-          background: #fff;
-          padding: 2rem;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-          width: 100%;
-          max-width: 400px;
-        }
-        h1 {
-          text-align: center;
-          margin-bottom: 1rem;
-        }
-        .form-group {
-          margin-bottom: 1rem;
+        h2 {
+            color: #2c3e50;
         }
         label {
-          display: block;
-          margin-bottom: 0.5rem;
+            display: block;
+            margin: 15px 0 5px;
+            text-align: left;
         }
         input {
-          width: 100%;
-          padding: 0.5rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
         }
         button {
-          width: 100%;
-          padding: 0.75rem;
-          background-color: #0070f3;
-          color: #fff;
-          border: none;
-          border-radius: 4px;
-          font-size: 1rem;
-          cursor: pointer;
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            background: #3498db;
+            color: white;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
         }
         button:hover {
-          background-color: #005bb5;
+            background: #2980b9;
         }
         .result {
-          margin-top: 1rem;
-          padding: 0.75rem;
-          background: #e0f7fa;
-          text-align: center;
-          border-radius: 4px;
-          font-weight: bold;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #27ae60;
         }
-      `}</style>
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Food Consumption Predictor</h2>
+        <label for="income">Family Income ($):</label>
+        <input type="number" id="income" step="0.01" placeholder="Enter family income">
+
+        <label for="size">Family Size:</label>
+        <input type="number" id="size" step="1" placeholder="Enter family size">
+
+        <button onclick="predict()">Predict</button>
+
+        <div class="result" id="output"></div>
     </div>
-  );
-}
+
+    <script>
+        function predict() {
+            const income = parseFloat(document.getElementById('income').value);
+            const size = parseFloat(document.getElementById('size').value);
+
+            if (isNaN(income) || isNaN(size)) {
+                document.getElementById('output').innerHTML = "Please enter valid numbers.";
+                return;
+            }
+
+            // Model: food = -1.118 + 0.148 * income + 0.793 * size
+            const food = -1.118 + (0.148 * income) + (0.793 * size);
+            const rounded = food.toFixed(2);
+
+            document.getElementById('output').innerHTML = `Estimated Food Consumption: <strong>$${rounded}</strong>`;
+        }
+    </script>
+
+</body>
+</html>
